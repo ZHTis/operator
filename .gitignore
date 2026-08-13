@@ -1,0 +1,15 @@
+.DS_Store
+.history/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+dist/
+build/
+*.egg-info/
+
+# Raw electrophysiology recordings should stay outside version control.
+*.dat
+*.larkcache
+

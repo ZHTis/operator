@@ -1,0 +1,123 @@
+{
+  "run": "09",
+  "neural": {
+    "path": "/Users/heting/Documents/readGripData/0807华山grip flight/testS001R09.dat.larkcache",
+    "shape": [
+      256,
+      286800
+    ],
+    "sampling_rate_hz": 2000.0,
+    "duration_s": 143.4,
+    "dtype": "int16",
+    "unit": "ADU",
+    "storage_time": "2026-08-07T16:42:27.213000",
+    "states": [
+      "FilePart",
+      "Notes",
+      "Recording",
+      "Running",
+      "SourceChannel1",
+      "SourceTime",
+      "StimulusTime",
+      "__pad0",
+      "__pad1",
+      "__pad2",
+      "__pad3"
+    ],
+    "fingerprint": {
+      "path": "/Users/heting/Documents/readGripData/0807华山grip flight/testS001R09.dat.larkcache",
+      "size_bytes": 154028344,
+      "mtime_ns": 1786159515801858953,
+      "edge_sha256": "2a7bb3c2bce328f2ecf062ea135db14075d3e55782022829e59a3e7b4ee69e49"
+    }
+  },
+  "task": {
+    "path": "/Users/heting/Documents/readGripData/0807华山grip flight/testS001R09_1.dat",
+    "shape": [
+      1,
+      31488
+    ],
+    "sampling_rate_hz": 256.0,
+    "duration_s": 123.0,
+    "dtype": "float32",
+    "unit": "ADU",
+    "storage_time": "2026-08-07T16:42:27.045000",
+    "states": [
+      "AudioBufferTime",
+      "AudioPresentationTime",
+      "BallVelocityY",
+      "BallWorldX",
+      "BallWorldY",
+      "CameraWorldX",
+      "Collision",
+      "CollisionObject",
+      "Feedback",
+      "FilePart",
+      "FlightTrialResult",
+      "GamePhase",
+      "GripForceNormalized",
+      "GripForceRaw",
+      "Notes",
+      "PauseApplication",
+      "PreStimulusTime",
+      "PresentationDisplayed",
+      "PresentationFrame",
+      "PresentationRequested",
+      "PresentationTime",
+      "Recording",
+      "ResultCode",
+      "Running",
+      "SourceTime",
+      "StimulusTime",
+      "TargetCode",
+      "VideoStimulusFrame",
+      "__pad0",
+      "__pad1",
+      "__pad2"
+    ],
+    "fingerprint": {
+      "path": "/Users/heting/Documents/readGripData/0807华山grip flight/testS001R09_1.dat",
+      "size_bytes": 2063605,
+      "mtime_ns": 1786159474616585611,
+      "edge_sha256": "72f8c27aee7c0fe69e0afe39b503e3364e49ddc1209fff05eb74108c2e70f5bb"
+    }
+  },
+  "neural_qc_first_10s": {
+    "analyzed_seconds": 10.0,
+    "n_channels": 256,
+    "finite_fraction": 1.0,
+    "constant_channels": [],
+    "rms_median_raw": 86.15708717547008,
+    "rms_min_raw": 85.5290012218078,
+    "rms_max_raw": 86.95623899410553,
+    "peak_to_peak_median_raw": 298.0,
+    "rms_coefficient_of_variation": 0.003336333385808567,
+    "warnings": [
+      "Channel RMS values are unusually homogeneous; inspect for generated or duplicated signals."
+    ]
+  },
+  "task_states": {
+    "GamePhase_values": [
+      0,
+      1,
+      2,
+      4,
+      5,
+      6
+    ],
+    "Feedback_rising_edges": [
+      544,
+      12832,
+      19712
+    ],
+    "Collision_rising_edges": [
+      18944
+    ]
+  },
+  "start_alignment": {
+    "offset_s": -0.168,
+    "uncertainty_s": 0.00390625,
+    "method": "BCI2000 StorageTime metadata"
+  },
+  "warning": "StorageTime only establishes a coarse start offset. Do not resample or merge streams until a shared state, pulse, or clock mapping validates drift."
+}
