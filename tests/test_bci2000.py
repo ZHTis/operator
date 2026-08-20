@@ -8,12 +8,20 @@ DATA = Path("/Users/heting/Documents/readGripData/0807华山grip flight")
 
 
 class BCI2000IntegrationTests(unittest.TestCase):
+    @unittest.skipUnless(
+        (DATA / "testS001R09.dat.larkcache").exists(),
+        "legacy R09 integration fixture is not available",
+    )
     def test_main_stream_metadata(self):
         rec = read_bci2000(DATA / "testS001R09.dat.larkcache")
         self.assertEqual(rec.signal.data.shape, (256, 286800))
         self.assertEqual(rec.signal.sampling_rate, 2000)
         self.assertEqual(rec.parameters["SubjectRun"], "09")
 
+    @unittest.skipUnless(
+        (DATA / "testS001R09_1.dat").exists(),
+        "legacy R09 integration fixture is not available",
+    )
     def test_task_stream_and_state(self):
         rec = read_bci2000(DATA / "testS001R09_1.dat")
         self.assertEqual(rec.signal.data.shape, (1, 31488))
@@ -25,4 +33,3 @@ class BCI2000IntegrationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

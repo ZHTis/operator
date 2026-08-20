@@ -7,11 +7,10 @@ name = "seegops"
 version = "0.1.0"
 description = "Task-agnostic, provenance-aware mathematical operators for sEEG"
 requires-python = ">=3.10"
-dependencies = ["numpy>=1.24"]
+dependencies = ["numpy>=1.24", "pandas>=2.0", "scipy>=1.10"]
 
 [project.scripts]
 seegops = "seegops.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-

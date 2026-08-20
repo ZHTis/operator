@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import re
 import numpy as np
+from scipy import signal as scipy_signal
 
 from .base import Operator
 from ..core import Signal, ValidationError
@@ -91,3 +92,47 @@ class Baseline(Operator):
         else:
             raise ValidationError("mode must be subtract, ratio, or db")
         return value.with_step(data, unit=unit, valid_mask=None, operator="baseline", parameters=self.parameters)
+
+
+@dataclass
+class NotchFilter(Operator):
+    """Apply fixed notch filters independently to every non-time trace."""
+
+    frequencies_hz: tuple[float, ...]
+    quality_factor: float = 30.0
+    trace_batch_size: int = 32
+
+    def apply(self, value: Signal) -> Signal:
+        axis = value.axis("time")
+        if axis != value.data.ndim - 1:
+            raise ValidationError("NotchFilter currently requires time as the last dimension")
+        if self.quality_factor <= 0 or self.trace_batch_size < 1:
+            raise ValidationError("quality_factor and trace_batch_size must be positive")
+        nyquist = value.sampling_rate / 2
+        frequencies = tuple(float(frequency) for frequency in self.frequencies_hz)
+        if any(frequency <= 0 or frequency >= nyquist for frequency in frequencies):
+            raise ValidationError("notch frequencies must lie inside (0, Nyquist)")
+        source = np.asarray(value.data, dtype=np.float32)
+        leading_shape = source.shape[:-1]
+        flat = source.reshape((-1, source.shape[-1]))
+        output = np.empty_like(flat, dtype=np.float32)
+        for start in range(0, flat.shape[0], self.trace_batch_size):
+            stop = min(start + self.trace_batch_size, flat.shape[0])
+            batch = flat[start:stop].astype(np.float64)
+            for frequency in frequencies:
+                b, a = scipy_signal.iirnotch(
+                    frequency, Q=self.quality_factor, fs=value.sampling_rate
+                )
+                batch = scipy_signal.filtfilt(b, a, batch, axis=-1)
+            output[start:stop] = batch
+        data = output.reshape(leading_shape + (source.shape[-1],))
+        attrs = dict(value.attrs)
+        attrs["notch_frequencies_hz"] = list(frequencies)
+        attrs["notch_quality_factor"] = self.quality_factor
+        return value.with_step(
+            data,
+            attrs=attrs,
+            valid_mask=None,
+            operator="notch_filter",
+            parameters=self.parameters,
+        )

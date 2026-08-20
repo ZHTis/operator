@@ -18,8 +18,15 @@ class Select(Operator):
         data = np.take(value.data, self.indices, axis=axis)
         coords = dict(value.coords)
         coords[self.dim] = value.coordinate(self.dim)[self.indices]
+        attrs = dict(value.attrs)
+        if self.dim == "channel":
+            source_indices = np.asarray(
+                attrs.get("source_channel_indices", np.arange(value.data.shape[axis])),
+                dtype=int,
+            )
+            attrs["source_channel_indices"] = source_indices[self.indices].tolist()
         mask = None if value.valid_mask is None else np.take(value.valid_mask, self.indices, axis=axis)
-        return value.with_step(data, coords=coords, valid_mask=mask, operator="select", parameters=self.parameters)
+        return value.with_step(data, coords=coords, attrs=attrs, valid_mask=mask, operator="select", parameters=self.parameters)
 
 
 @dataclass
